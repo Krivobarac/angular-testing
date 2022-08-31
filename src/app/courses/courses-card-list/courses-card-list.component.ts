@@ -17,16 +17,11 @@ export class CoursesCardListComponent implements OnInit {
   @Output()
   courseEdited = new EventEmitter();
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog) { }
 
-  }
-
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   editCourse(course: Course) {
-
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -43,16 +38,6 @@ export class CoursesCardListComponent implements OnInit {
         tap(() => this.courseEdited.emit())
       )
       .subscribe();
-
   }
 
 }
-
-
-
-
-
-
-
-
-

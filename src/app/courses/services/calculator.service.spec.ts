@@ -17,8 +17,8 @@ describe('CalculatorService', () => {
         })
         
         calculator = TestBed.inject(CalculatorService);
-
     });
+    
     
     it('should add twoo numbers', () => {
         const result = calculator.add(2, 2);
@@ -27,6 +27,7 @@ describe('CalculatorService', () => {
 
         expect(loggerSpy.log).toHaveBeenCalledTimes(1);
     });
+
     
     it('should subtract twoo numbers', () => {
         const result = calculator.subtract(2, 2);
