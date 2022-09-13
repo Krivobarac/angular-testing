@@ -1,9 +1,8 @@
-import {ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed, waitForAsync} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync, fakeAsync, flush} from '@angular/core/testing';
 import {CoursesModule} from '../courses.module';
 import {DebugElement} from '@angular/core';
-
 import {HomeComponent} from './home.component';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {CoursesService} from '../services/courses.service';
 import {setupCourses} from '../common/setup-test-data';
 import {By} from '@angular/platform-browser';
@@ -72,21 +71,40 @@ describe('HomeComponent', () => {
   });
 
 
-  it("should display advanced courses when tab clicked", () => {
+  // fakeAsync version of the same test
+  it("should display advanced courses when tab clicked - fakeAsync", fakeAsync( () => {
     coursesServiceSpy.findAllCourses.and.returnValue(of(setupCourses()));
     fixture.detectChanges();
 
     const tabs = el.queryAll(By.css('.mat-tab-label'));
-    console.log(tabs)
 
     click(tabs[1]);
-    fixture.detectChanges(); // component doesn't see second tab's card list but see first of
+    fixture.detectChanges();
 
-    const cardTitles = el.queryAll(By.css('.mat-card-title'));
+    flush()
+
+    const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
     expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
     expect(cardTitles[0].nativeElement.textContent).toBe(filteredCourses('ADVANCED')[0].titles.description);
-  });
+ 
+  }) );
+
+
+  // waitForAsync version of the same test
+  it("should display advanced courses when tab clicked - waitForAsync", waitForAsync( () => {
+    coursesServiceSpy.findAllCourses.and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
+
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+
+    click(tabs[1]);
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+      const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
+      expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
+      expect(cardTitles[0].nativeElement.textContent).toBe(filteredCourses('ADVANCED')[0].titles.description);
+    });
+  }) );
 
 });
-
-

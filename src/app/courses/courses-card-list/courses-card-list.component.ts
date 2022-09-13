@@ -10,7 +10,6 @@ import {filter, tap} from 'rxjs/operators';
   styleUrls: ['./courses-card-list.component.css']
 })
 export class CoursesCardListComponent implements OnInit {
-
   @Input()
   courses: Course[];
 
@@ -31,7 +30,6 @@ export class CoursesCardListComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
 
-
     dialogRef.afterClosed()
       .pipe(
         filter(val => !!val),
@@ -39,5 +37,4 @@ export class CoursesCardListComponent implements OnInit {
       )
       .subscribe();
   }
-
 }
